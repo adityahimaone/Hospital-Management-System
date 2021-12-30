@@ -1,5 +1,6 @@
 package patients
 
+
 import (
 	"Hospital-Management-System/business"
 )
@@ -64,3 +65,4 @@ func (serv *servicePatient) Delete(id int) (string, error) {
 
 	return result, nil
 }
+
