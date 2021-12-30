@@ -6,6 +6,7 @@ import (
 	controller "Hospital-Management-System/controllers"
 	"Hospital-Management-System/controllers/admins"
 	"Hospital-Management-System/controllers/doctors"
+	"Hospital-Management-System/controllers/patients"
 	"Hospital-Management-System/controllers/nurses"
 	"net/http"
 
@@ -14,10 +15,17 @@ import (
 )
 
 type ControllerList struct {
+
+	JWTMiddleware     middleware.JWTConfig
+	PatientController patients.PatientController
+	DoctorController  doctors.DoctorController
+	AdminController   admins.AdminController
+
 	JWTMiddleware middleware.JWTConfig
 	doctors.DoctorController
 	AdminController admins.AdminController
 	nurses.NurseController
+
 }
 
 func (cl *ControllerList) RouteRegister(e *echo.Echo) {
@@ -26,6 +34,11 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	e.POST("/api/v1/admins/login", cl.AdminController.Login)
 
 	e.POST("/api/v1/admins/add/doctor", cl.DoctorController.Register, middleware.JWTWithConfig(cl.JWTMiddleware), RoleValidationAdmin())
+	e.POST("/api/v1/admins/add/patient", cl.PatientController.Register, middleware.JWTWithConfig(cl.JWTMiddleware), RoleValidationAdmin())
+	e.PUT("/api/v1/admins/update/patient/:id", cl.PatientController.Update, middleware.JWTWithConfig(cl.JWTMiddleware), RoleValidationAdmin())
+	e.DELETE("/api/v1/admins/delete/patient/:id", cl.PatientController.Delete, middleware.JWTWithConfig(cl.JWTMiddleware), RoleValidationAdmin())
+	e.GET("/api/v1/admins/list/patient", cl.PatientController.AllPatient, middleware.JWTWithConfig(cl.JWTMiddleware), RoleValidationAdmin())
+
 	e.PUT("/api/v1/admins/update/doctor/:id", cl.DoctorController.Update, middleware.JWTWithConfig(cl.JWTMiddleware), RoleValidationAdmin())
 	e.DELETE("/api/v1/admins/delete/doctor/:id", cl.DoctorController.Delete, middleware.JWTWithConfig(cl.JWTMiddleware), RoleValidationAdmin())
 	e.GET("/api/v1/admins/list/doctor", cl.DoctorController.AllDoctor, middleware.JWTWithConfig(cl.JWTMiddleware), RoleValidationAdmin())
