@@ -10,8 +10,8 @@ import (
 type Doctors struct {
 	gorm.Model
 	ID           int    `gorm:"primary_key"`
-	Username     string `gorm:"unique"`
-	Password     string
+	Username     string `json:"username" form:"username" gorm:"unique"`
+	Password     string `json:"password" form:"password"`
 	Fullname     string
 	Specialist   string
 	Address      string
