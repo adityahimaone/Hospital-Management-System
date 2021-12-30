@@ -6,8 +6,8 @@ import (
 	controller "Hospital-Management-System/controllers"
 	"Hospital-Management-System/controllers/admins"
 	"Hospital-Management-System/controllers/doctors"
-	"Hospital-Management-System/controllers/patients"
 	"Hospital-Management-System/controllers/nurses"
+	"Hospital-Management-System/controllers/patients"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -15,17 +15,12 @@ import (
 )
 
 type ControllerList struct {
-
 	JWTMiddleware     middleware.JWTConfig
 	PatientController patients.PatientController
 	DoctorController  doctors.DoctorController
 	AdminController   admins.AdminController
 
-	JWTMiddleware middleware.JWTConfig
-	doctors.DoctorController
-	AdminController admins.AdminController
 	nurses.NurseController
-
 }
 
 func (cl *ControllerList) RouteRegister(e *echo.Echo) {
